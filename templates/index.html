@@ -1,0 +1,234 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0"><i class="fas fa-pen-alt"></i> Handwritten Hindi Text Recognition</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    Upload an image containing handwritten or printed Hindi text, and we'll use OCR (Optical Character Recognition) 
+                    to extract and display the text.
+                </p>
+                
+                <form action="{{ url_for('recognize') }}" method="post" enctype="multipart/form-data" class="mt-4">
+                    <div class="mb-3">
+                        <label for="image" class="form-label"><i class="fas fa-upload"></i> Choose Image</label>
+                        <div class="upload-container position-relative">
+                            <input type="file" class="form-control" id="image" name="image" accept=".jpg,.jpeg,.png" required>
+                            <div class="form-text">Supported formats: JPG, JPEG, PNG</div>
+                            <!-- Image preview will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="handwritten" name="handwritten" checked>
+                        <label class="form-check-label" for="handwritten">
+                            <i class="fas fa-pen-fancy"></i> Handwritten Text Mode
+                        </label>
+                        <div class="form-text">Enable for better recognition of handwritten Hindi text</div>
+                    </div>
+                    
+                    <div class="card mt-4 mb-4">
+                        <div class="card-header bg-secondary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-sliders"></i> Enhanced Preprocessing Options
+                                <button class="btn btn-sm btn-outline-light float-end" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#preprocessingOptions">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </h4>
+                        </div>
+                        <div class="collapse show" id="preprocessingOptions">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="resize" class="form-label">
+                                            <i class="fas fa-expand-arrows-alt"></i> Resize Image (%)
+                                        </label>
+                                        <input type="range" class="form-range" id="resize" name="resize" 
+                                              min="50" max="200" value="100" oninput="this.nextElementSibling.value = this.value + '%'">
+                                        <output>100%</output>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="blur" class="form-label">
+                                            <i class="fas fa-tint"></i> Blur (Noise Reduction)
+                                        </label>
+                                        <input type="range" class="form-range" id="blur" name="blur" 
+                                              min="0" max="9" step="2" value="0" oninput="this.nextElementSibling.value = this.value">
+                                        <output>0</output>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-magic"></i> Thresholding Method</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="threshold" id="threshNone" value="none">
+                                            <label class="form-check-label" for="threshNone">None</label>
+                                        </div>
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="threshold" id="threshSimple" value="simple">
+                                            <label class="form-check-label" for="threshSimple">Simple</label>
+                                        </div>
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="threshold" id="threshAdaptive" value="adaptive" checked>
+                                            <label class="form-check-label" for="threshAdaptive">Adaptive</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="threshold" id="threshOtsu" value="otsu">
+                                            <label class="form-check-label" for="threshOtsu">Otsu</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Advanced handwritten text options -->
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="denoise" name="denoise" checked>
+                                            <label class="form-check-label" for="denoise">
+                                                <i class="fas fa-broom"></i> Denoise Image
+                                            </label>
+                                            <div class="form-text">Removes noise while preserving edges</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="contrast" name="contrast" checked>
+                                            <label class="form-check-label" for="contrast">
+                                                <i class="fas fa-adjust"></i> Enhance Contrast
+                                            </label>
+                                            <div class="form-text">Improves text visibility</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-vector-square"></i> Morphological Operation</label>
+                                    <select class="form-select" name="morphology" id="morphology">
+                                        <option value="none">None</option>
+                                        <option value="dilate" selected>Dilate (connect broken strokes)</option>
+                                        <option value="erode">Erode (remove noise)</option>
+                                        <option value="open">Open (remove noise then restore shape)</option>
+                                        <option value="close">Close (fill gaps in characters)</option>
+                                    </select>
+                                    <div class="form-text">Morphological operations help improve character recognition</div>
+                                </div>
+                                
+                                <div class="alert alert-info" role="alert" id="handwrittenTips">
+                                    <i class="fas fa-info-circle"></i> <strong>Tip for Handwritten Text:</strong> 
+                                    <p class="mb-0 mt-2">For handwritten Hindi text, the recommended settings are:</p>
+                                    <ul class="mt-2 mb-0">
+                                        <li>Adaptive thresholding for better character separation</li>
+                                        <li>Denoising to remove background noise</li>
+                                        <li>Contrast Enhancement to improve text visibility</li>
+                                        <li>Dilation to connect broken strokes in characters</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-search"></i> Recognize Text
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Beginner Guide -->
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0"><i class="fas fa-book"></i> Beginner's Guide</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="border-bottom pb-2"><i class="fas fa-cogs"></i> How Hindi Handwritten Text Recognition Works:</h5>
+                <ol class="custom-list">
+                    <li>Upload an image containing handwritten or printed Hindi text</li>
+                    <li>The application uses advanced preprocessing techniques to enhance text visibility</li>
+                    <li>Special algorithms handle the variability in handwritten text</li>
+                    <li>Tesseract OCR engine with custom configuration recognizes Hindi characters</li>
+                    <li>The recognized text is displayed with confidence score</li>
+                </ol>
+                
+                <h5 class="border-bottom pb-2 mt-4"><i class="fas fa-lightbulb"></i> Tips for Better Results:</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-transparent">
+                            <div class="card-body p-0">
+                                <h6 class="text-primary"><i class="fas fa-image"></i> Image Quality</h6>
+                                <ul>
+                                    <li>Use clear, high-resolution images</li>
+                                    <li>Ensure good, even lighting</li>
+                                    <li>Keep background simple and clean</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-transparent">
+                            <div class="card-body p-0">
+                                <h6 class="text-primary"><i class="fas fa-pen-nib"></i> Handwriting Style</h6>
+                                <ul>
+                                    <li>Ensure adequate spacing between characters</li>
+                                    <li>Write with consistent pressure</li>
+                                    <li>Avoid excessive decorative elements</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-transparent">
+                            <div class="card-body p-0">
+                                <h6 class="text-primary"><i class="fas fa-sliders"></i> Processing Options</h6>
+                                <ul>
+                                    <li>Try different thresholding methods</li>
+                                    <li>Adjust contrast for faded text</li>
+                                    <li>Use dilation for thin or broken handwriting</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-transparent">
+                            <div class="card-body p-0">
+                                <h6 class="text-primary"><i class="fas fa-exclamation-circle"></i> Common Issues</h6>
+                                <ul>
+                                    <li>Cursive writing may be challenging</li>
+                                    <li>Paper creases can cause recognition errors</li>
+                                    <li>Very stylized forms might not be recognized</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning mt-4" role="alert">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                        </div>
+                        <div>
+                            <h5>Important Note</h5>
+                            <p class="mb-0">Handwritten text recognition is more challenging than printed text. Results may vary 
+                            depending on handwriting style, image quality, and clarity. Experiment with different preprocessing 
+                            settings for optimal results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

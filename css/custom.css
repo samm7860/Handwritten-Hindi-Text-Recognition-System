@@ -1,0 +1,254 @@
+/* Custom styles for Hindi Handwritten Text Recognition project */
+
+:root {
+    --gradient-primary: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    --gradient-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --shadow-smooth: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --border-radius-card: 12px;
+    --border-radius-elements: 8px;
+    --transition-speed: 0.3s;
+}
+
+/* Body styling with subtle pattern */
+body {
+    background-color: var(--bs-body-bg);
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233a3a3a' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Hindi text should have ample line height and proper font */
+.hindi-text {
+    line-height: 1.8;
+    font-family: 'Noto Sans Devanagari', 'Arial Unicode MS', sans-serif;
+    font-size: 1.4rem;
+    word-spacing: 0.1rem;
+    letter-spacing: 0.02rem;
+    padding: 1.5rem;
+    background-color: rgba(var(--bs-light-rgb), 0.03);
+    border-radius: var(--border-radius-elements);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar styling with gradient */
+.navbar {
+    background: var(--gradient-primary) !important;
+    box-shadow: var(--shadow-smooth);
+    padding: 0.8rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all var(--transition-speed);
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+}
+
+/* Card styling with enhanced appearance */
+.card {
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-smooth);
+    border-radius: var(--border-radius-card);
+    border: none;
+    overflow: hidden;
+    transition: all var(--transition-speed);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced card headers with gradients */
+.card-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: none;
+}
+
+.card-header.bg-primary {
+    background: var(--gradient-primary) !important;
+}
+
+.card-header.bg-secondary {
+    background: var(--gradient-secondary) !important;
+}
+
+.card-header.bg-info {
+    background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%) !important;
+}
+
+.card-header.bg-success {
+    background: linear-gradient(135deg, #43A047 0%, #66BB6A 100%) !important;
+}
+
+/* Image containers with elegant borders */
+.img-fluid {
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: var(--border-radius-elements);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all var(--transition-speed);
+}
+
+.img-fluid:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Form styling for better user experience */
+.form-control, .form-select {
+    border-radius: var(--border-radius-elements);
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(var(--bs-dark-rgb), 0.4);
+    transition: all var(--transition-speed);
+}
+
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    background-color: rgba(var(--bs-dark-rgb), 0.5);
+}
+
+/* Make the file input more attractive */
+input[type="file"] {
+    padding: 0.75rem;
+    border-radius: var(--border-radius-elements);
+    border: 2px dashed rgba(var(--bs-primary-rgb), 0.5);
+    transition: all var(--transition-speed);
+}
+
+input[type="file"]:hover {
+    border-color: rgba(var(--bs-primary-rgb), 0.8);
+    background-color: rgba(var(--bs-primary-rgb), 0.05);
+}
+
+/* Form controls for better readability */
+.form-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: rgba(var(--bs-light-rgb), 0.9);
+}
+
+.form-check-label {
+    font-weight: normal;
+}
+
+/* Custom styling for form elements */
+.form-range {
+    height: 1.5rem;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: var(--bs-primary);
+    box-shadow: 0 0 5px rgba(var(--bs-primary-rgb), 0.5);
+}
+
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    transition: all var(--transition-speed);
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 10px rgba(var(--bs-primary-rgb), 0.4);
+}
+
+/* Button styling */
+.btn {
+    border-radius: var(--border-radius-elements);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all var(--transition-speed);
+    border: none;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    box-shadow: 0 4px 10px rgba(var(--bs-primary-rgb), 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(var(--bs-primary-rgb), 0.5);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+/* Better alerts with modern styling */
+.alert {
+    border-radius: var(--border-radius-elements);
+    border: none;
+    box-shadow: var(--shadow-smooth);
+    padding: 1rem 1.25rem;
+}
+
+.alert ul {
+    padding-left: 1.5rem;
+}
+
+/* Footer styling with gradient */
+footer {
+    margin-top: 4rem;
+    padding: 1.5rem 0;
+    background: var(--gradient-primary) !important;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations for elements */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card, .alert, .btn-primary {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    .hindi-text {
+        font-size: 1.2rem;
+        padding: 1rem;
+    }
+    
+    .form-check {
+        margin-bottom: 0.5rem;
+    }
+    
+    .card-header {
+        padding: 1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+}
+
+/* Custom scrollbar for a more polished look */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(var(--bs-dark-rgb), 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--bs-primary-rgb), 0.5);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--bs-primary-rgb), 0.7);
+}
